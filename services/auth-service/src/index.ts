@@ -1,7 +1,9 @@
 import express, { Express, Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import authRoutes from './routes/authRoutes';
 import connectDB from './config/database';
+import { corsOptions } from './config/cors';
 
 dotenv.config();
 
@@ -9,6 +11,10 @@ const app: Express = express();
 const port = process.env.PORT || 5001;
 
 // Middleware
+// CORS middleware - must be before routes
+app.use(cors(corsOptions));
+
+// Request body parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
