@@ -134,7 +134,14 @@ export const refreshToken = (req: AuthRequest, res: Response) => {
       return res.status(401).json({ error: 'Invalid or expired refresh token' });
     }
 
-    const { token, refreshToken: newRefreshToken } = generateTokens(decoded);
+    // Extract only the necessary payload properties (exclude exp, iat, etc.)
+    const payload = {
+      id: decoded.id,
+      email: decoded.email,
+      role: decoded.role
+    };
+
+    const { token, refreshToken: newRefreshToken } = generateTokens(payload);
 
     res.status(200).json({
       token,
